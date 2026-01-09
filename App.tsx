@@ -6,7 +6,7 @@ import { AIAnalyst } from './components/AIAnalyst';
 import { NewsFeed } from './components/NewsFeed';
 import { TerminalBackground } from './components/TerminalBackground';
 import { loadAssets, saveAssets, calculateSummary } from './services/storageService';
-import { marketStream } from './services/marketStreamService';
+
 import { Asset, INITIAL_ASSETS, CurrencyCode, MarketIndex } from './types';
 import { BarChart2, TrendingUp, TrendingDown, AlertCircle, Radio } from 'lucide-react';
 
@@ -29,7 +29,7 @@ const App: React.FC = () => {
   const [assets, setAssets] = useState<Asset[]>([]);
   const [isLoading, setIsLoading] = useState(true);
   const [currency, setCurrency] = useState<CurrencyCode>('USD');
-  const [wsConnected, setWsConnected] = useState(false);
+
   
   // Ticker State
   const [tickerData, setTickerData] = useState(INITIAL_TICKER_DATA);
@@ -49,67 +49,10 @@ const App: React.FC = () => {
     const data = loadAssets();
     const loadedAssets = data.length > 0 ? data : INITIAL_ASSETS;
     setAssets(loadedAssets);
-    
-    // Register assets with stream service to initialize base prices
-    loadedAssets.forEach(a => marketStream.registerAsset(a.symbol, a.currentPrice));
-    
     setIsLoading(false);
   }, []);
 
-  // Initialize WebSocket connection
-  useEffect(() => {
-    marketStream.connect();
-    setWsConnected(true);
 
-    const unsubscribe = marketStream.subscribe((update) => {
-      // Check if update is for an owned asset
-      setAssets(currentAssets => 
-        currentAssets.map(asset => {
-          if (asset.symbol === update.symbol) {
-            return {
-              ...asset,
-              currentPrice: update.price,
-              change24h: update.changePercent,
-              lastUpdated: new Date(update.timestamp).toISOString()
-            };
-          }
-          return asset;
-        })
-      );
-
-      // Check if update is for a market index
-      setIndices(currentIndices => 
-        currentIndices.map(index => {
-          if (index.symbol === update.symbol) {
-            return {
-              ...index,
-              value: update.price,
-              change: update.changePercent,
-              changeVal: update.change
-            };
-          }
-          return index;
-        })
-      );
-
-      // Update ticker data if symbol is tracked in ticker
-      setTickerData(prev => {
-        if (TICKER_SYMBOLS.includes(update.symbol)) {
-          return {
-            ...prev,
-            [update.symbol]: { price: update.price, change: update.changePercent }
-          };
-        }
-        return prev;
-      });
-    });
-
-    return () => {
-      unsubscribe();
-      marketStream.disconnect();
-      setWsConnected(false);
-    };
-  }, []);
 
   // Save assets whenever they change (debounced slightly in a real app, but direct here for now)
   useEffect(() => {
@@ -125,7 +68,6 @@ const App: React.FC = () => {
       lastUpdated: new Date().toISOString()
     };
     setAssets(prev => [...prev, asset]);
-    marketStream.registerAsset(asset.symbol, asset.currentPrice);
   };
 
   const handleDeleteAsset = (id: string) => {
