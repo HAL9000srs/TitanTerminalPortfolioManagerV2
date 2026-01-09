@@ -50,8 +50,8 @@ const App: React.FC = () => {
     const loadedAssets = data.length > 0 ? data : INITIAL_ASSETS;
     setAssets(loadedAssets);
     
-    // Register assets with stream service
-    loadedAssets.forEach(a => marketStream.registerAsset(a.symbol));
+    // Register assets with stream service to initialize base prices
+    loadedAssets.forEach(a => marketStream.registerAsset(a.symbol, a.currentPrice));
     
     setIsLoading(false);
   }, []);
@@ -106,6 +106,7 @@ const App: React.FC = () => {
 
     return () => {
       unsubscribe();
+      marketStream.disconnect();
       setWsConnected(false);
     };
   }, []);
@@ -124,7 +125,7 @@ const App: React.FC = () => {
       lastUpdated: new Date().toISOString()
     };
     setAssets(prev => [...prev, asset]);
-    marketStream.registerAsset(asset.symbol);
+    marketStream.registerAsset(asset.symbol, asset.currentPrice);
   };
 
   const handleDeleteAsset = (id: string) => {
