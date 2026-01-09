@@ -76,7 +76,17 @@ export const Dashboard: React.FC<DashboardProps> = ({ summary, assets, currency,
             <DollarSign size={48} />
           </div>
           <p className="text-terminal-muted text-xs font-mono uppercase tracking-widest mb-1">Net Worth</p>
-          <div className="text-2xl md:text-3xl font-mono font-medium text-white">{formatValue(convertedStats.totalValue, currency)}</div>
+          <div 
+            className="font-mono font-medium text-white leading-none mb-1"
+            style={{ 
+              fontSize: 'clamp(1rem, 6vw, 1.875rem)',
+              overflow: 'hidden',
+              textOverflow: 'ellipsis',
+              whiteSpace: 'nowrap'
+            }}
+          >
+            {formatValue(convertedStats.totalValue, currency)}
+          </div>
           <div className="mt-2 text-xs text-terminal-muted flex items-center gap-1">
             <span className="text-emerald-500 font-mono">+2.4%</span>
             <span>vs last month</span>
@@ -88,7 +98,15 @@ export const Dashboard: React.FC<DashboardProps> = ({ summary, assets, currency,
             <Activity size={48} />
           </div>
           <p className="text-terminal-muted text-xs font-mono uppercase tracking-widest mb-1">Total PnL</p>
-          <div className={`text-2xl md:text-3xl font-mono font-medium ${convertedStats.totalGainLoss >= 0 ? 'text-emerald-400' : 'text-rose-400'}`}>
+          <div 
+            className={`font-mono font-medium leading-none mb-1 ${convertedStats.totalGainLoss >= 0 ? 'text-emerald-400' : 'text-rose-400'}`}
+            style={{ 
+              fontSize: 'clamp(1rem, 6vw, 1.875rem)',
+              overflow: 'hidden',
+              textOverflow: 'ellipsis',
+              whiteSpace: 'nowrap'
+            }}
+          >
             {convertedStats.totalGainLoss >= 0 ? '+' : ''}{formatValue(convertedStats.totalGainLoss, currency)}
           </div>
           <div className="mt-2 text-xs text-terminal-muted flex items-center gap-1">
@@ -148,8 +166,17 @@ export const Dashboard: React.FC<DashboardProps> = ({ summary, assets, currency,
                 <XAxis dataKey="name" stroke="#52525b" tick={{fill: '#71717a', fontSize: 12}} tickLine={false} axisLine={false} />
                 <YAxis stroke="#52525b" tick={{fill: '#71717a', fontSize: 12}} tickLine={false} axisLine={false} tickFormatter={(val) => `${SUPPORTED_CURRENCIES[currency].symbol}${val < 1000 ? val : (val/1000).toFixed(0) + 'k'}`} />
                 <RechartsTooltip 
-                  contentStyle={{ backgroundColor: '#18181b', borderColor: '#27272a', color: '#fff' }}
-                  itemStyle={{ color: '#00dc82' }}
+                  contentStyle={{ 
+                    backgroundColor: 'transparent', 
+                    border: 'none',
+                    padding: '0' 
+                  }}
+                  itemStyle={{ 
+                    color: '#00dc82', 
+                    textShadow: '0 0 5px rgba(0, 220, 130, 0.5)' 
+                  }}
+                  labelStyle={{ color: '#fff', marginBottom: '4px' }}
+                  wrapperStyle={{ outline: 'none', zIndex: 50 }}
                   formatter={(value: number) => formatValue(value, currency)}
                 />
                 <Line 
@@ -185,7 +212,17 @@ export const Dashboard: React.FC<DashboardProps> = ({ summary, assets, currency,
                   ))}
                 </Pie>
                 <RechartsTooltip 
-                   contentStyle={{ backgroundColor: '#18181b', borderColor: '#27272a', color: '#fff' }}
+                   contentStyle={{ 
+                     backgroundColor: 'transparent', 
+                     border: 'none',
+                     padding: '0' 
+                   }}
+                   itemStyle={{ 
+                     color: '#00dc82', 
+                     textShadow: '0 0 5px rgba(0, 220, 130, 0.5)' 
+                   }}
+                   labelStyle={{ color: '#fff', marginBottom: '4px' }}
+                   wrapperStyle={{ outline: 'none', zIndex: 50 }}
                    formatter={(val: number) => formatValue(val, currency)}
                 />
                 <Legend verticalAlign="bottom" height={36} wrapperStyle={{ fontSize: '12px' }} />

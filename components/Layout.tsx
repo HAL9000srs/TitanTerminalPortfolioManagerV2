@@ -49,7 +49,10 @@ export const Layout: React.FC<LayoutProps> = ({ children, activeTab, onTabChange
         </nav>
 
         <div className="p-4 border-t border-terminal-border">
-          <div className="flex items-center gap-3 px-4 py-3 text-terminal-muted text-sm hover:text-terminal-text cursor-pointer">
+          <div 
+            onClick={() => alert("TITAN.OS: Configuration modules are currently restricted to Level 4 Administrators.")}
+            className="flex items-center gap-3 px-4 py-3 text-terminal-muted text-sm hover:text-terminal-text cursor-pointer"
+          >
             <Settings size={16} />
             <span>Terminal Config</span>
           </div>
