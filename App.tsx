@@ -30,6 +30,14 @@ const App: React.FC = () => {
   const [isLoading, setIsLoading] = useState(true);
   const [currency, setCurrency] = useState<CurrencyCode>('USD');
 
+  // TODO: State Batching for Market Data Updates
+  // When implementing real-time market data streaming, use the following pattern:
+  // 1. Create updateBufferRef = useRef<Map<string, Partial<Asset>>>(new Map())
+  // 2. Create batchTimeoutRef = useRef<NodeJS.Timeout | null>(null)
+  // 3. Queue updates in buffer with 150ms timeout
+  // 4. Apply all buffered updates to assets state in a single batch
+  // This reduces re-renders from O(n) per tick to O(1) per 150ms batch
+  
   
   // Ticker State
   const [tickerData, setTickerData] = useState(INITIAL_TICKER_DATA);

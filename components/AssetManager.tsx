@@ -11,7 +11,7 @@ interface AssetManagerProps {
   onCurrencyChange: (code: CurrencyCode) => void;
 }
 
-export const AssetManager: React.FC<AssetManagerProps> = ({ assets, onAddAsset, onDeleteAsset, currency, onCurrencyChange }) => {
+export const AssetManager: React.FC<AssetManagerProps> = React.memo(({ assets, onAddAsset, onDeleteAsset, currency, onCurrencyChange }) => {
   const [isModalOpen, setIsModalOpen] = useState(false);
   const [searchTerm, setSearchTerm] = useState('');
   const [filterType, setFilterType] = useState<string>('ALL');
@@ -283,4 +283,9 @@ export const AssetManager: React.FC<AssetManagerProps> = ({ assets, onAddAsset, 
       )}
     </div>
   );
-};
+}, (prevProps, nextProps) => {
+  // Custom comparison for performance optimization
+  return prevProps.currency === nextProps.currency &&
+         prevProps.assets.length === nextProps.assets.length &&
+         prevProps.assets === nextProps.assets;
+});

@@ -21,6 +21,7 @@ export const Layout: React.FC<LayoutProps> = ({ children, activeTab, onTabChange
           ? 'bg-terminal-border/50 border-terminal-accent text-terminal-accent'
           : 'border-transparent text-terminal-muted hover:bg-terminal-border/30 hover:text-terminal-text'
       }`}
+      style={activeTab === id ? { textShadow: '0 0 8px rgba(0, 220, 130, 0.5)' } : {}}
     >
       <Icon size={18} className="mr-3" />
       <span className="font-medium tracking-wide text-sm">{label}</span>
@@ -36,7 +37,7 @@ export const Layout: React.FC<LayoutProps> = ({ children, activeTab, onTabChange
             <div className="w-8 h-8 bg-gradient-to-br from-terminal-accent to-emerald-800 rounded flex items-center justify-center text-black font-bold text-lg shadow-[0_0_15px_rgba(0,220,130,0.3)]">
               T
             </div>
-            <span className="font-bold text-lg tracking-wider font-mono text-terminal-text">TITAN<span className="text-terminal-accent">.OS</span></span>
+            <span className="font-bold text-lg tracking-wider font-mono text-terminal-text">TITAN<span className="text-terminal-accent" style={{ textShadow: '0 0 8px rgba(0, 220, 130, 0.5)' }}>.OS</span></span>
           </div>
         </div>
 

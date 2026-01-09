@@ -1,7 +1,7 @@
 import React from 'react';
 import { Asset, PortfolioSummary, CurrencyCode } from '../types';
 import { convertValue, formatValue, SUPPORTED_CURRENCIES } from '../services/currencyService';
-import { PieChart, Pie, Cell, ResponsiveContainer, Tooltip as RechartsTooltip, Legend, LineChart, Line, XAxis, YAxis, CartesianGrid } from 'recharts';
+import { BarChart, Bar, Cell, ResponsiveContainer, Tooltip as RechartsTooltip, LineChart, Line, XAxis, YAxis, CartesianGrid } from 'recharts';
 import { TrendingUp, TrendingDown, DollarSign, Activity, Globe, ChevronDown } from 'lucide-react';
 
 interface DashboardProps {
@@ -11,7 +11,7 @@ interface DashboardProps {
   onCurrencyChange: (code: CurrencyCode) => void;
 }
 
-export const Dashboard: React.FC<DashboardProps> = ({ summary, assets, currency, onCurrencyChange }) => {
+export const Dashboard: React.FC<DashboardProps> = React.memo(({ summary, assets, currency, onCurrencyChange }) => {
   const COLORS = ['#00dc82', '#3b82f6', '#f59e0b', '#8b5cf6', '#ec4899', '#ef4444'];
 
   const getConvertedSummary = () => {
@@ -62,7 +62,7 @@ export const Dashboard: React.FC<DashboardProps> = ({ summary, assets, currency,
               <ChevronDown size={14} className="absolute right-3 top-1/2 -translate-y-1/2 text-terminal-muted pointer-events-none" />
            </div>
 
-           <span className="px-3 py-1 rounded bg-terminal-accent/10 text-terminal-accent border border-terminal-accent/20 text-xs font-mono flex items-center gap-2">
+           <span className="px-3 py-1 rounded bg-terminal-accent/10 text-terminal-accent border border-terminal-accent/20 text-xs font-mono flex items-center gap-2" style={{ textShadow: '0 0 10px rgba(0, 220, 130, 0.6)' }}>
              <div className="w-2 h-2 rounded-full bg-terminal-accent animate-pulse"></div>
              SYSTEM ONLINE
            </span>
@@ -192,25 +192,34 @@ export const Dashboard: React.FC<DashboardProps> = ({ summary, assets, currency,
           </div>
         </div>
 
-        {/* Allocation Donut */}
+        {/* Allocation Bar Chart */}
         <div className="bg-terminal-panel border border-terminal-border rounded-lg p-6">
           <h3 className="text-lg font-medium text-white mb-6">Asset Allocation</h3>
-          <div className="h-[300px] w-full min-w-0 relative">
+          <div className="h-[300px] w-full min-w-0">
             <ResponsiveContainer width="100%" height="100%">
-              <PieChart>
-                <Pie
-                  data={allocationData}
-                  cx="50%"
-                  cy="50%"
-                  innerRadius={60}
-                  outerRadius={80}
-                  paddingAngle={5}
-                  dataKey="value"
-                >
-                  {allocationData.map((entry, index) => (
-                    <Cell key={`cell-${index}`} fill={COLORS[index % COLORS.length]} stroke="rgba(0,0,0,0)" />
-                  ))}
-                </Pie>
+              <BarChart
+                layout="vertical"
+                data={allocationData}
+                margin={{ top: 5, right: 30, left: 20, bottom: 5 }}
+              >
+                <CartesianGrid strokeDasharray="3 3" stroke="#27272a" horizontal={false} />
+                <XAxis 
+                  type="number" 
+                  stroke="#52525b"
+                  tick={{fill: '#71717a', fontSize: 12}}
+                  tickLine={false}
+                  axisLine={false}
+                  tickFormatter={(val) => `${val < 1000 ? val.toFixed(1) : (val/1000).toFixed(1) + 'k'}`}
+                />
+                <YAxis 
+                  type="category" 
+                  dataKey="name"
+                  stroke="#52525b"
+                  tick={{fill: '#71717a', fontSize: 12}}
+                  tickLine={false}
+                  axisLine={false}
+                  width={80}
+                />
                 <RechartsTooltip 
                    contentStyle={{ 
                      backgroundColor: 'transparent', 
@@ -225,17 +234,21 @@ export const Dashboard: React.FC<DashboardProps> = ({ summary, assets, currency,
                    wrapperStyle={{ outline: 'none', zIndex: 50 }}
                    formatter={(val: number) => formatValue(val, currency)}
                 />
-                <Legend verticalAlign="bottom" height={36} wrapperStyle={{ fontSize: '12px' }} />
-              </PieChart>
+                <Bar dataKey="value" radius={[0, 4, 4, 0]}>
+                  {allocationData.map((entry, index) => (
+                    <Cell key={`cell-${index}`} fill={COLORS[index % COLORS.length]} />
+                  ))}
+                </Bar>
+              </BarChart>
             </ResponsiveContainer>
-            {/* Center Text */}
-            <div className="absolute top-1/2 left-1/2 transform -translate-x-1/2 -translate-y-[60%] text-center pointer-events-none">
-              <p className="text-terminal-muted text-xs">TOTAL</p>
-              <p className="text-white font-mono font-bold text-sm">{assets.length} Assets</p>
-            </div>
           </div>
         </div>
       </div>
     </div>
   );
-};
+}, (prevProps, nextProps) => {
+  // Custom comparison for performance optimization
+  return prevProps.currency === nextProps.currency &&
+         JSON.stringify(prevProps.summary) === JSON.stringify(nextProps.summary) &&
+         prevProps.assets.length === nextProps.assets.length;
+});

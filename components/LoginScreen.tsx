@@ -31,7 +31,7 @@ export const LoginScreen: React.FC<LoginScreenProps> = ({ onLogin }) => {
               <span className="text-3xl font-bold text-black font-mono">T</span>
            </div>
            <h1 className="text-4xl font-light tracking-tight text-white mb-2 font-mono">
-             TITAN<span className="text-terminal-accent">.OS</span>
+             TITAN<span className="text-terminal-accent" style={{ textShadow: '0 0 8px rgba(0, 220, 130, 0.5)' }}>.OS</span>
            </h1>
            <p className="text-terminal-muted text-sm tracking-widest uppercase">Institutional Access Terminal</p>
         </div>
@@ -43,7 +43,7 @@ export const LoginScreen: React.FC<LoginScreenProps> = ({ onLogin }) => {
            
            <form onSubmit={handleLogin} className="space-y-6">
               <div className="space-y-2">
-                 <label className="text-xs font-mono text-terminal-accent uppercase tracking-wider flex items-center gap-2">
+                 <label className="text-xs font-mono text-terminal-accent uppercase tracking-wider flex items-center gap-2" style={{ textShadow: '0 0 6px rgba(0, 220, 130, 0.4)' }}>
                     <User size={12} /> Operator ID
                  </label>
                  <div className="relative group">
@@ -59,7 +59,7 @@ export const LoginScreen: React.FC<LoginScreenProps> = ({ onLogin }) => {
               </div>
 
               <div className="space-y-2">
-                 <label className="text-xs font-mono text-terminal-accent uppercase tracking-wider flex items-center gap-2">
+                 <label className="text-xs font-mono text-terminal-accent uppercase tracking-wider flex items-center gap-2" style={{ textShadow: '0 0 6px rgba(0, 220, 130, 0.4)' }}>
                     <Lock size={12} /> Access Key
                  </label>
                  <div className="relative group">
@@ -105,7 +105,7 @@ export const LoginScreen: React.FC<LoginScreenProps> = ({ onLogin }) => {
         <div className="mt-8 flex justify-between items-center px-4">
            <div className="flex items-center gap-2">
               <div className="w-2 h-2 rounded-full bg-terminal-accent animate-pulse"></div>
-              <span className="text-[10px] text-terminal-accent font-mono">SYSTEM ONLINE</span>
+              <span className="text-[10px] text-terminal-accent font-mono" style={{ textShadow: '0 0 8px rgba(0, 220, 130, 0.6)' }}>SYSTEM ONLINE</span>
            </div>
            <div className="text-[10px] text-terminal-muted font-mono">
               V.2.4.0-STABLE
