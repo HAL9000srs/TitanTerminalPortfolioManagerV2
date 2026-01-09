@@ -4,48 +4,40 @@
     <meta charset="UTF-8" />
     <meta name="viewport" content="width=device-width, initial-scale=1.0" />
     <title>Titan Terminal</title>
-    <link
-      rel="icon"
-      type="image/svg+xml"
-      href="data:image/svg+xml,<svg xmlns=%22http://www.w3.org/2000/svg%22 viewBox=%220 0 100 100%22><defs><linearGradient id=%22grad%22 x1=%220%25%22 y1=%220%25%22 x2=%22100%22 y2=%22100%25%22><stop offset=%220%25%22 style=%22stop-color:%2300dc82;stop-opacity:1%22 /><stop offset=%22100%25%22 style=%22stop-color:%23065f46;stop-opacity:1%22 /></linearGradient></defs><rect width=%22100%22 height=%22100%22 rx=%2220%22 fill=%22url(%23grad)%22 /><text x=%2250%25%22 y=%2255%25%22 dominant-baseline=%22middle%22 text-anchor=%22middle%22 font-family=%22monospace%22 font-weight=%22bold%22 font-size=%2260%22 fill=%22black%22>T</text></svg>"
-    />
     <script src="https://cdn.tailwindcss.com"></script>
-    <link
-      href="https://fonts.googleapis.com/css2?family=Inter:wght@300;400;500;600;700&family=JetBrains+Mono:wght@400;500;600&display=swap"
-      rel="stylesheet"
-    />
+    <link href="https://fonts.googleapis.com/css2?family=Inter:wght@300;400;500;600;700&family=JetBrains+Mono:wght@400;500;600&display=swap" rel="stylesheet">
     <script>
       tailwind.config = {
-        darkMode: "class",
+        darkMode: 'class',
         theme: {
           extend: {
             fontFamily: {
-              sans: ["Inter", "sans-serif"],
-              mono: ["JetBrains Mono", "monospace"],
+              sans: ['Inter', 'sans-serif'],
+              mono: ['JetBrains Mono', 'monospace'],
             },
             colors: {
               terminal: {
-                bg: "#0a0a0b",
-                panel: "#121214",
-                border: "#27272a",
-                accent: "#00dc82", // Matrix green
-                danger: "#ff3b30",
-                text: "#e4e4e7",
-                muted: "#a1a1aa",
-              },
+                bg: '#0a0a0b',
+                panel: '#121214',
+                border: '#27272a',
+                accent: '#00dc82', // Matrix green
+                danger: '#ff3b30',
+                text: '#e4e4e7',
+                muted: '#a1a1aa'
+              }
             },
             animation: {
-              ticker: "ticker 40s linear infinite",
+              ticker: 'ticker 40s linear infinite',
             },
             keyframes: {
               ticker: {
-                "0%": { transform: "translateX(0)" },
-                "100%": { transform: "translateX(-50%)" },
-              },
-            },
-          },
-        },
-      };
+                '0%': { transform: 'translateX(0)' },
+                '100%': { transform: 'translateX(-50%)' },
+              }
+            }
+          }
+        }
+      }
     </script>
     <style>
       body {
@@ -60,14 +52,14 @@
         height: 8px;
       }
       ::-webkit-scrollbar-track {
-        background: #0a0a0b;
+        background: #0a0a0b; 
       }
       ::-webkit-scrollbar-thumb {
-        background: #27272a;
+        background: #27272a; 
         border-radius: 2px;
       }
       ::-webkit-scrollbar-thumb:hover {
-        background: #3f3f46;
+        background: #3f3f46; 
       }
 
       /* CRT Scanline Overlay */
@@ -94,22 +86,22 @@
         pointer-events: none;
       }
     </style>
-    <script type="importmap">
-      {
-        "imports": {
-          "@google/genai": "https://esm.sh/@google/genai@^1.34.0",
-          "lucide-react": "https://esm.sh/lucide-react@^0.562.0",
-          "recharts": "https://esm.sh/recharts@^3.6.0",
-          "react/": "https://esm.sh/react@^19.2.3/",
-          "react": "https://esm.sh/react@^19.2.3",
-          "react-dom/": "https://esm.sh/react-dom@^19.2.3/"
-        }
-      }
-    </script>
-    <link rel="stylesheet" href="/index.css" />
-  </head>
+  <script type="importmap">
+{
+  "imports": {
+    "@google/genai": "https://esm.sh/@google/genai@^1.34.0",
+    "lucide-react": "https://esm.sh/lucide-react@^0.562.0",
+    "recharts": "https://esm.sh/recharts@^3.6.0",
+    "react/": "https://esm.sh/react@^19.2.3/",
+    "react": "https://esm.sh/react@^19.2.3",
+    "react-dom/": "https://esm.sh/react-dom@^19.2.3/"
+  }
+}
+</script>
+<link rel="stylesheet" href="/index.css">
+</head>
   <body>
     <div id="root"></div>
-    <script type="module" src="/index.tsx"></script>
-  </body>
+  <script type="module" src="/index.tsx"></script>
+</body>
 </html>

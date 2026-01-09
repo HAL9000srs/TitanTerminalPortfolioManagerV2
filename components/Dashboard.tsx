@@ -1,7 +1,7 @@
-import React, { useMemo } from 'react';
+import React from 'react';
 import { Asset, PortfolioSummary, CurrencyCode } from '../types';
 import { convertValue, formatValue, SUPPORTED_CURRENCIES } from '../services/currencyService';
-import { ResponsiveContainer, Tooltip as RechartsTooltip, LineChart, Line, XAxis, YAxis, CartesianGrid } from 'recharts';
+import { PieChart, Pie, Cell, ResponsiveContainer, Tooltip as RechartsTooltip, Legend, LineChart, Line, XAxis, YAxis, CartesianGrid } from 'recharts';
 import { TrendingUp, TrendingDown, DollarSign, Activity, Globe, ChevronDown } from 'lucide-react';
 
 interface DashboardProps {
@@ -12,7 +12,7 @@ interface DashboardProps {
 }
 
 export const Dashboard: React.FC<DashboardProps> = ({ summary, assets, currency, onCurrencyChange }) => {
-
+  const COLORS = ['#00dc82', '#3b82f6', '#f59e0b', '#8b5cf6', '#ec4899', '#ef4444'];
 
   const getConvertedSummary = () => {
     return {
@@ -33,8 +33,11 @@ export const Dashboard: React.FC<DashboardProps> = ({ summary, assets, currency,
     { name: 'Jun', value: convertValue(summary.totalValue, currency) },
   ];
 
-  // Calculate allocation data dynamically from assets
-
+  // Convert allocation data
+  const allocationData = summary.allocation.map(item => ({
+    ...item,
+    value: convertValue(item.value, currency)
+  }));
 
   return (
     <div className="space-y-6">
@@ -122,9 +125,9 @@ export const Dashboard: React.FC<DashboardProps> = ({ summary, assets, currency,
       </div>
 
       {/* Charts Row */}
-      <div className="grid grid-cols-1 gap-6">
+      <div className="grid grid-cols-1 lg:grid-cols-3 gap-6">
         {/* Portfolio Growth Line Chart */}
-        <div className="bg-terminal-panel border border-terminal-border rounded-lg p-6">
+        <div className="lg:col-span-2 bg-terminal-panel border border-terminal-border rounded-lg p-6">
           <div className="flex items-center justify-between mb-6">
             <h3 className="text-lg font-medium text-white flex items-center gap-2">
               <Activity size={18} className="text-terminal-accent" />
@@ -162,7 +165,39 @@ export const Dashboard: React.FC<DashboardProps> = ({ summary, assets, currency,
           </div>
         </div>
 
-
+        {/* Allocation Donut */}
+        <div className="bg-terminal-panel border border-terminal-border rounded-lg p-6">
+          <h3 className="text-lg font-medium text-white mb-6">Asset Allocation</h3>
+          <div className="h-[300px] w-full min-w-0 relative">
+            <ResponsiveContainer width="100%" height="100%">
+              <PieChart>
+                <Pie
+                  data={allocationData}
+                  cx="50%"
+                  cy="50%"
+                  innerRadius={60}
+                  outerRadius={80}
+                  paddingAngle={5}
+                  dataKey="value"
+                >
+                  {allocationData.map((entry, index) => (
+                    <Cell key={`cell-${index}`} fill={COLORS[index % COLORS.length]} stroke="rgba(0,0,0,0)" />
+                  ))}
+                </Pie>
+                <RechartsTooltip 
+                   contentStyle={{ backgroundColor: '#18181b', borderColor: '#27272a', color: '#fff' }}
+                   formatter={(val: number) => formatValue(val, currency)}
+                />
+                <Legend verticalAlign="bottom" height={36} wrapperStyle={{ fontSize: '12px' }} />
+              </PieChart>
+            </ResponsiveContainer>
+            {/* Center Text */}
+            <div className="absolute top-1/2 left-1/2 transform -translate-x-1/2 -translate-y-[60%] text-center pointer-events-none">
+              <p className="text-terminal-muted text-xs">TOTAL</p>
+              <p className="text-white font-mono font-bold text-sm">{assets.length} Assets</p>
+            </div>
+          </div>
+        </div>
       </div>
     </div>
   );
