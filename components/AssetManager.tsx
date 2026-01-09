@@ -179,7 +179,7 @@ export const AssetManager: React.FC<AssetManagerProps> = ({ assets, onAddAsset, 
                     <td className="px-6 py-4 text-right font-mono text-white flex flex-col items-end">
                       <span>{formatValue(convertValue(asset.currentPrice, currency), currency)}</span>
                       <span className={`text-[10px] ${asset.change24h >= 0 ? 'text-emerald-500' : 'text-rose-500'}`}>
-                        {asset.change24h > 0 ? '+' : ''}{asset.change24h}%
+                        {asset.change24h > 0 ? '+' : ''}{asset.change24h.toFixed(2)}%
                       </span>
                     </td>
                     <td className="px-6 py-4 text-right font-mono font-medium text-white">{formatValue(convertValue(valueRaw, currency), currency)}</td>
